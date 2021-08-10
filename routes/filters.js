@@ -1,16 +1,48 @@
 const conn = require('../db')
+const express = require("express")
+const router = express.Router()
 
-function filters(value, district, province, type, period){
-    let f = conn.query(`SELECT DISTINCT ${value} FROM archaeology_tbl WHERE province = ${province} AND district =  ${district} AND sub_type = ${type} AND period = ${period} ORDER BY ${value} ASC`, (error, result)=>{
-        // console.log(fetched)
-        // if(!error){
-        //   result.map(function(val,i){
-        //     list.districts.push(val['district'])
-        //   })  
-        // }
-      
-        console.log(f)
-      })
-}
+router.get('/', (req, res) => {
+  const district = req.query.district
+  const province = req.query.province
+  const type = req.query.type
+  const period = req.query.period
 
-filters(district, "", "Punjab", "", "", "")
+  var sql = `SELECT DISTINCT district, province, sub_type, period FROM archaeology_tbl `
+  let check=0;
+  let cond=''
+
+  if(province != ""){
+    console.log('d')
+    if(check==0){
+   sql += `WHERE province = "${province}" `
+   check=check+1;
+    }
+  }
+  if(district != ""){
+    if(check==0?cond='Where':cond='and')
+      if(cond=='Where'?check=check+1:'Where')
+    sql +=  `${cond} district = "${district}" `
+  }
+  if(type != ""){
+    if(check==0?cond='Where':cond='and')
+    if(cond=='where'?check++:'Where')
+    sql +=  `${cond} sub_type = "${type}" `
+  }
+  if(period != ""){
+    if(check==0?cond='Where':cond='and')
+    if(cond=='where'?check++:'Where')
+    sql +=  `${cond} period = "${period}" `
+  }
+
+  conn.query(sql, (error, result)=>{
+    if(!error){
+      res.json(result)
+    }
+
+    console.log(sql)
+  }) 
+
+})
+
+module.exports = router
