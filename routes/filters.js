@@ -9,10 +9,10 @@ function onlyUnique(value, index, self) {
 router.get('/', (req, res) => {
 
   var list = {
-    "districts" : [],
-    "provinces" : [],
-    "periods" : [],
-    "sub_types" : [],
+    "district" : [],
+    "province" : [],
+    "period" : [],
+    "type" : [],
   }
 
   const district = req.query.district
@@ -49,15 +49,14 @@ router.get('/', (req, res) => {
 
   conn.query(sql, (error, result)=>{
     if(!error){
-      list.districts = result.map(val => val.district).filter(onlyUnique).sort()
-      list.provinces = result.map(val => val.province).filter(onlyUnique).sort()
-      list.periods = result.map(val => val.period).filter(onlyUnique).sort()
-      list.sub_types = result.map(val => val.sub_type).filter(onlyUnique).sort()
-      
+      list.district = result.map(val => val.district).filter(onlyUnique).sort()
+      list.province = result.map(val => val.province).filter(onlyUnique).sort()
+      list.period = result.map(val => val.period).filter(onlyUnique).sort()
+      list.type = result.map(val => val.sub_type).filter(onlyUnique).sort()
+     
       res.json(list)
     }
     
-    console.log(sql)
   }) 
 
 })
