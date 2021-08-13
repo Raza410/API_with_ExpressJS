@@ -21,11 +21,9 @@ conn.query('SELECT DISTINCT district FROM archaeology_tbl ORDER BY district ASC'
       list.districts.push(val['district'])
     })  
   }
-
 })
 
 conn.query('SELECT DISTINCT sub_type FROM archaeology_tbl ORDER BY sub_type ASC', (error, result)=>{
-
   if(!error){
     result.map(function(val,i){
       list.sub_types.push(val['sub_type'])
@@ -33,7 +31,7 @@ conn.query('SELECT DISTINCT sub_type FROM archaeology_tbl ORDER BY sub_type ASC'
   }
 })
 
-router.get('/', (req, res) => {
+router.post('/', (req, res) => {
   res.json(list)
 
 })

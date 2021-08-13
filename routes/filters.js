@@ -2,7 +2,19 @@ const conn = require('../db')
 const express = require("express")
 const router = express.Router()
 
+function onlyUnique(value, index, self) {
+  return self.indexOf(value) === index;
+}
+
 router.get('/', (req, res) => {
+
+  var list = {
+    "districts" : [],
+    "provinces" : [],
+    "periods" : [],
+    "sub_types" : [],
+  }
+
   const district = req.query.district
   const province = req.query.province
   const type = req.query.type
@@ -37,9 +49,14 @@ router.get('/', (req, res) => {
 
   conn.query(sql, (error, result)=>{
     if(!error){
-      res.json(result)
+      list.districts = result.map(val => val.district).filter(onlyUnique).sort()
+      list.provinces = result.map(val => val.province).filter(onlyUnique).sort()
+      list.periods = result.map(val => val.period).filter(onlyUnique).sort()
+      list.sub_types = result.map(val => val.sub_type).filter(onlyUnique).sort()
+      
+      res.json(list)
     }
-
+    
     console.log(sql)
   }) 
 
