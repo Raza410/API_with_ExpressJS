@@ -59,6 +59,8 @@ router.get('/', (req, res) => {
     
   }) 
 
+  console.log(sql)
+
 })
 
 module.exports = router

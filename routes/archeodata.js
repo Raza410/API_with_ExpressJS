@@ -31,7 +31,7 @@ conn.query('SELECT DISTINCT sub_type FROM archaeology_tbl ORDER BY sub_type ASC'
   }
 })
 
-router.post('/', (req, res) => {
+router.get('/', (req, res) => {
   res.json(list)
 
 })
